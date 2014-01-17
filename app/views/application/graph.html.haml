@@ -1,0 +1,8 @@
+#controls
+  = link_to 'Start instrumentation', start_path, remote: true
+  = link_to 'Stop instrumentation', stop_path, remote: true
+
+%svg#graph
+
+:javascript
+  window.data = #{@graph.to_json};

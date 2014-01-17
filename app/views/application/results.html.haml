@@ -1,0 +1,14 @@
+- @objects.each do |obj|
+  .object
+    %p Object: #{obj}
+    %p Dump: #{ObjectSpace.dump(obj)}
+    %p Source file: #{ObjectSpace.allocation_sourcefile(obj)}
+    %p Source line: #{ObjectSpace.allocation_sourceline(obj)}
+    %p Generation: #{ObjectSpace.allocation_generation(obj)}
+    %p Namespace: #{ObjectSpace.allocation_class_path(obj)}
+    %p Method: #{ObjectSpace.allocation_method_id(obj)}
+    %p
+      Reachable objects:
+      %ol
+        - ObjectSpace.reachable_objects_from(obj).each do |child_obj|
+          %li= child_obj
