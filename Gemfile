@@ -20,11 +20,13 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 
 gem 'haml-rails'
+gem 'tubesock'
+
 
 group :development do
   gem 'pry'
 end
-group :test do
+group :development, :test do
   gem 'test-unit', '2.5.5'
 end
 
@@ -32,3 +34,4 @@ group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
+gem 'puma'

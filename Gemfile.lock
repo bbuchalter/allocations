@@ -63,6 +63,8 @@ GEM
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
+    puma (2.7.1)
+      rack (>= 1.1, < 2.0)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -108,10 +110,14 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
+    tubesock (0.2.2)
+      rack (>= 1.5.0)
+      websocket (>= 1.1.0)
     tzinfo (0.3.38)
     uglifier (2.4.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    websocket (1.1.2)
 
 PLATFORMS
   ruby
@@ -121,8 +127,10 @@ DEPENDENCIES
   haml-rails
   jquery-rails
   pry
+  puma
   rails (= 4.0.2)
   sass-rails (~> 4.0.0)
   sdoc
   test-unit (= 2.5.5)
+  tubesock
   uglifier (>= 1.3.0)

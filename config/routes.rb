@@ -1,6 +1,6 @@
 Allocations::Application.routes.draw do
 
-  root to: 'application#test'
+  root to: 'application#graph'
 
   controller :application do
     get :test
@@ -8,6 +8,7 @@ Allocations::Application.routes.draw do
     get :stop
     get :results
     get :graph
+    get :data
   end
 
 end

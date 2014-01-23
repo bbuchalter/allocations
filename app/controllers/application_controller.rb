@@ -1,12 +1,17 @@
 require 'objspace'
+require 'stream'
 require 'graph_data'
 
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
+
+  include Tubesock::Hijack
+
+  $stream = Stream.new
+
   protect_from_forgery with: :exception
 
   def test
+    100.times {|n| "#{n}foo" }
     render text: 'create some string'
   end
 
@@ -15,7 +20,11 @@ class ApplicationController < ActionController::Base
       GC.disable
     end
     ActiveSupport::Notifications.subscribe('process_action.action_controller') do |*args|
-      $objects = ObjectSpace.each_object(ActionView::Base).map &method(:object_data)
+      if $stream.connected?
+        ObjectSpace.each_object(ActionView::Base) do |obj|
+          stream_object_data! obj
+        end
+      end
       GC.enable
       GC.start
     end
@@ -28,23 +37,34 @@ class ApplicationController < ActionController::Base
     head :ok
   end
 
-  def results
+  def index
     @objects = ObjectSpace.each_object(ActionController::Base)
   end
 
   def graph
-    @graph = GraphData.new($objects || [])
-    GC.start
+  end
+
+  def data
+    hijack do |websocket|
+      websocket.onopen do
+        $stream = Stream.new(websocket)
+      end
+      websocket.onclose do
+        $stream = Stream.new
+      end
+    end
   end
 
   private
 
-  def object_data(obj, depth=0)
-    if depth >= 5
+  def stream_object_data!(obj, depth=0)
+    if depth >= 3
       references = []
     else
-      references = ObjectSpace.reachable_objects_from(obj).map {|r| object_data(r, depth + 1) }
+      references = ObjectSpace.reachable_objects_from(obj).map {|r| stream_object_data!(r, depth + 1) }
     end
-    ObjectData.new(obj.class.to_s, obj.object_id, references)
+    ObjectData.new(obj.class.to_s, obj.object_id, references).tap do |object_data|
+      $stream.write object_data.to_json
+    end
   end
 end

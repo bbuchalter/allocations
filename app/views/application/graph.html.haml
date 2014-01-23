@@ -1,8 +1,10 @@
 #controls
   = link_to 'Start instrumentation', start_path, remote: true
   = link_to 'Stop instrumentation', stop_path, remote: true
+  = link_to 'Test', test_path, remote: true
+  = link_to 'Clear', '#', class: 'clear'
 
 %svg#graph
 
 :javascript
-  window.data = #{@graph.to_json};
+  window.websocket_url = 'ws://localhost:3000#{data_path}';
