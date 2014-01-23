@@ -12,8 +12,8 @@ Doing so will enable real time allocation profiling of YOUR rails application.
 1. Lots of RAM
 
 ## Setup:
-1. ```ruby bundle install```
-1. ```ruby rails s```
+1. ```bundle install```
+1. ```rails s```
 
 ## What do I do?
 1. Load ```http://localhost:3000```
