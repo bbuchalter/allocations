@@ -7,8 +7,8 @@ $ ->
   height = window.innerHeight - distance - 10
 
   window.graph = new GraphData()
-  stream = new Stream(window.websocket_url, graph)
-  stream.connect()
+  window.stream = new Stream(window.websocket_url, graph)
+  window.stream.connect()
 
   redraw = =>
     svg = d3.select('#graph').attr('height', height).attr('width', width)

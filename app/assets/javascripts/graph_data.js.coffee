@@ -3,24 +3,27 @@ class window.GraphData
   constructor: ->
     @nodes = {}
     @links = {}
-    @group = 0
+    @linkCount = 0
+    @nodeCount = 0
 
   append: (data) ->
     parent = @createNode(data.klass)
     for reference in data.references
       child = @createNode(reference.klass)
       @createLink(parent, child)
+    @updateDisplay()
     null
 
   createNode: (klass) ->
     unless @nodes[klass]
-      @nodes[klass] = {name: klass, group: @group}
-      @group += 1
+      @nodes[klass] = {name: klass, group: @nodeCount}
+      @nodeCount += 1
     @nodes[klass]
 
   createLink: (parent, child) ->
     link_key = "#{parent.name}-#{child.name}"
     link = @links[link_key]
+    @linkCount += 1
     if link
       link.value += 1
     else
@@ -29,7 +32,13 @@ class window.GraphData
   clear: ->
     @nodes = {}
     @links = {}
-    @group = 0
+    @linkCount = 0
+    @nodeCount = 0
+    @updateDisplay()
+
+  updateDisplay: ->
+    $("#node-count").html(@nodeCount)
+    $("#link-count").html(@linkCount)
 
   serializeNodes: ->
     _.values(@nodes)

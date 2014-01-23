@@ -4,6 +4,7 @@ class window.Stream
     @url = url
     @accumulator = accumulator
     @websocket = null
+    @readCount = 0
 
   read: (data) =>
     return unless @websocket
@@ -11,6 +12,14 @@ class window.Stream
     console.log(data)
     @accumulator.append(JSON.parse(data.data))
 
+  resetCount: ->
+    @readCount = 0
+
+  updateReadCount: =>
+    @readCount += 1
+    $("#read-count").html(@readCount)
+
   connect: ->
-    @websocket = new WebSocket(@url)
-    @websocket.onmessage = @read
+    @websocket = new WebSocketConnection(@url)
+    @websocket.addCallback(@read)
+    @websocket.addCallback(@updateReadCount)
