@@ -11,7 +11,6 @@ class window.GraphData
     for reference in data.references
       child = @createNode(reference.klass)
       @createLink(parent, child)
-    @updateDisplay()
     null
 
   createNode: (klass) ->
@@ -34,11 +33,7 @@ class window.GraphData
     @links = {}
     @linkCount = 0
     @nodeCount = 0
-    @updateDisplay()
 
-  updateDisplay: ->
-    $("#node-count").html(@nodeCount)
-    $("#link-count").html(@linkCount)
 
   serializeNodes: ->
     _.values(@nodes)
